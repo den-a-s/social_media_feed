@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MАТ F*CK</title>
+    <link rel="stylesheet" type="text/css" href="resources\css\user.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="middle-bar">
+        <div class="name-of-public"><h2>MАТ F*CK</h2></div>
+        <div class="bar">
+          <div class="elem">
+            <img src="resources\mathboss.jpg" alt="" />
+          </div>
+          <div class="elem">
+            <div class="description">
+              <h2><q class="centered">&nbsp;</q></h2>
+              <blockquote>
+                Значение A называется пределом (предельным значением) функции
+                f(x) в точке x0, если для любого наперёд взятого положительного
+                числа ε найдётся отвечающее ему положительное число δ = δ(ε)
+                такое, что для всех аргументов x, удовлетворяющих условию 0 < |x
+                − x0| < δ, выполняется неравенство: |f(x) − A| < ε
+              </blockquote>
+              <br />
+              (c) mathboss
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="middle-bar">
+        <div class="posts"><b>Посты сообщества</b></div>
+      </div>
+
+      <div class="for-post">
+        <div class="post">
+          <div class="text">Шумно</div>
+          <img src="/img/posts/restorator (1).jpg" alt="" />
+          <div class="for-buttons">
+            <button class="heart-button">&#10084;</button>
+            <button class="dislike-button">&#128403;</button>
+          </div>
+        </div>
+      </div>
+      <div class="for-post">
+        <div class="post">
+          <div class="text">текст</div>
+          <img src="/img/posts/Zvalues.jpg" alt="" />
+          <div class="for-buttons">
+            <button class="heart-button" id="heartButton">&#10084;</button>
+            <button class="dislike-button" id="dislikeButton">&#128403;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Получаем все посты
+      const posts = document.querySelectorAll(".for-post")
+
+      posts.forEach((post) => {
+        const heartButton = post.querySelector(".heart-button")
+        const dislikeButton = post.querySelector(".dislike-button")
+
+        heartButton.addEventListener("click", function () {
+          // Если дизлайк активен, убираем его активное состояние
+          if (dislikeButton.classList.contains("active")) {
+            dislikeButton.classList.remove("active")
+          }
+          heartButton.classList.toggle("active") // Переключаем класс 'active' для сердца
+        })
+
+        dislikeButton.addEventListener("click", function () {
+          // Если сердце активно, убираем его активное состояние
+          if (heartButton.classList.contains("active")) {
+            heartButton.classList.remove("active")
+          }
+          dislikeButton.classList.toggle("active") // Переключаем класс 'active' для дизлайка
+        })
+      })
+    </script>
+  </body>
+</html>
