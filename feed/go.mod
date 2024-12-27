@@ -1,4 +1,4 @@
-module social.media.feed
+module social-media-feed
 
 go 1.23.3
 

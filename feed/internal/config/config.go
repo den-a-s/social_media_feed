@@ -20,6 +20,14 @@ type HTTPServer struct {
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-required:"true"`
 }
 
+type DB struct {
+	Username string `yaml:"username" env-required:"true"`
+	Host string `yaml:"host" env-required:"true"`
+	Port string `yaml:"port" env-required:"true"`
+	DBName string `yaml:"db_name" env-required:"true"`
+	SSLMode string `yaml:"sslmode" env-required:"true"`
+}
+
 func MustLoad() *Config {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {

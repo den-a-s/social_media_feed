@@ -5,13 +5,14 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"social-media-feed/internal/env"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"social.media.feed/internal/config"
-	mwLogger "social.media.feed/internal/http/middleware/logger"
+	"social-media-feed/internal/config"
+	mwLogger "social-media-feed/internal/http/middleware/logger"
 )
 
 const (
@@ -22,6 +23,7 @@ const (
 
 func main() {
 
+	env.MustLoad()
 	cfg := config.MustLoad()
 
 	fmt.Println(cfg)
