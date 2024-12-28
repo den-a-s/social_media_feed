@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  social-media-feed:
+    build: ./
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=qwerty
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - 6432:5432
+volumes:
+  pg_data:
+    # external: true

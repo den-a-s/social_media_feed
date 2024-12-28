@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jmoiron/sqlx"
 
 	"social-media-feed/internal/config"
 	mwLogger "social-media-feed/internal/http/middleware/logger"
@@ -31,6 +32,19 @@ func main() {
 	logger := setupLogger(cfg.Env)
 	
 	logger.Info("Start feed app")
+
+	db_connected_string := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		cfg.DB.Host, cfg.DB.Port, cfg.DB.Username, cfg.DB.DBName, os.Getenv("DB_PASSWORD"), cfg.DB.SSLMode)
+
+	db, err := sqlx.Connect("postgres", db_connected_string)
+    if err != nil {
+        panic(fmt.Sprintf("DB is not connected %s", db_connected_string))
+    }
+
+	err = db.Ping()
+	if err != nil {
+		panic(fmt.Sprintf("DB is not pinged %s", err))
+	}
 
 	router := chi.NewRouter()
 
