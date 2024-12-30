@@ -44,6 +44,7 @@ body {
   font-size: 7em;
   color: rgb(12, 23, 18);
   margin: 0.1em;
+  text-align: center;
 }
 
 .container > .middle-bar .description {
