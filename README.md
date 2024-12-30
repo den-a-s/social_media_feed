@@ -18,3 +18,9 @@ CONFIG_PATH="./config/local.yaml"
 ```
 make build && make local_start # или _prod
 ```
+
+При первом запуске не забыть запустить
+
+```
+make migrate
+```

@@ -11,6 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 
 	"social-media-feed/internal/config"
 	mwLogger "social-media-feed/internal/http/middleware/logger"
@@ -38,12 +39,12 @@ func main() {
 
 	db, err := sqlx.Connect("postgres", db_connected_string)
     if err != nil {
-        panic(fmt.Sprintf("DB is not connected %s", db_connected_string))
+        panic(fmt.Sprintf("DB is not connected %s", err))
     }
-
-	err = db.Ping()
+	
+	res, err := db.Queryx("SELECT * FROM schema_migrations")
 	if err != nil {
-		panic(fmt.Sprintf("DB is not pinged %s", err))
+		panic(fmt.Sprintf("DB select post err: %s", err))
 	}
 
 	router := chi.NewRouter()
