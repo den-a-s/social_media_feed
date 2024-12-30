@@ -35,27 +35,18 @@
       <div class="middle-bar">
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
-
+      {{range .Posts}}
       <div class="for-post">
         <div class="post">
-          <div class="text">Шумно</div>
-          <img src="/img/posts/restorator (1).jpg" alt="" />
+          <div class="text">{{.Title}}</div>
+          <img src="{{.PostImg}}" alt="" />
           <div class="for-buttons">
             <button class="heart-button">&#10084;</button>
             <button class="dislike-button">&#128403;</button>
           </div>
         </div>
       </div>
-      <div class="for-post">
-        <div class="post">
-          <div class="text">текст</div>
-          <img src="/img/posts/Zvalues.jpg" alt="" />
-          <div class="for-buttons">
-            <button class="heart-button" id="heartButton">&#10084;</button>
-            <button class="dislike-button" id="dislikeButton">&#128403;</button>
-          </div>
-        </div>
-      </div>
+      {{end}}
     </div>
 
     <script>

@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
+	"html/template"
 	"log/slog"
 	"net/http"
 	"os"
@@ -37,6 +40,8 @@ func main() {
 	db_connected_string := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
 		cfg.DB.Host, cfg.DB.Port, cfg.DB.Username, cfg.DB.DBName, os.Getenv("DB_PASSWORD"), cfg.DB.SSLMode)
 
+	fmt.Println(db_connected_string)
+
 	db, err := sqlx.Connect("postgres", db_connected_string)
     if err != nil {
         panic(fmt.Sprintf("DB is not connected %s", err))
@@ -46,6 +51,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("DB select post err: %s", err))
 	}
+
+	fmt.Println("Пишем логи")
+	logger.Info(fmt.Sprintf("res from select: %s", res))
 
 	router := chi.NewRouter()
 
@@ -62,13 +70,58 @@ func main() {
 	})
   
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		fs := http.StripPrefix("/", http.FileServer(http.Dir("./resources")))
-		fs.ServeHTTP(w, r)
+		main_html, err := GetFilledMainTemplate(logger)
+		if err != nil {
+			logger.Error(fmt.Sprintf("Не смогли получить сформированный шаблон: %s", err))
+		}
+
+		w.Write([]byte(main_html))
 	})
 
 	address := fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
 
 	http.ListenAndServe(address, router)
+}
+
+func GetFilledMainTemplate(logger *slog.Logger) (string, error) {
+	type Posts struct {
+		Title string
+		PostImg string
+	}
+
+	tmpl, err := os.ReadFile("./web/templates/main_tmpl.html")
+	if err != nil {
+		return "", errors.New(fmt.Sprintf("Not read file: %s", err))
+	}
+
+	t, err := template.New("webpage").Parse(string(tmpl))
+	if err != nil {
+		return "", errors.New(fmt.Sprintf("Bad create template: %s", err))
+	}
+
+	data := struct {
+		Posts []Posts
+	}{
+		Posts: []Posts{
+			Posts{
+				Title: "Мафбосс 1",
+				PostImg: "resources/posts_image/mathboss_1.jpg",
+			},
+			Posts{
+				Title: "Мафбосс 2",
+				PostImg: "resources/posts_image/mathboss_2.jpg",
+			},
+		},
+	};
+
+	buf := new(bytes.Buffer)
+
+	err = t.Execute(buf, data)
+	if err != nil {
+		return "", errors.New(fmt.Sprintf("Bad parsing: %s", err))
+	}
+
+	return buf.String(), nil
 }
 
 func setupLogger(env string) *slog.Logger {
