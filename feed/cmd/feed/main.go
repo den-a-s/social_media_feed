@@ -11,7 +11,7 @@ import (
 
 	"social-media-feed/internal/config"
 	"social-media-feed/internal/http/middleware/logger"
-	"social-media-feed/internal/router"
+	"social-media-feed/internal/http/router"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"social-media-feed/internal/config"
-	"social-media-feed/internal/template"
+	"social-media-feed/internal/http/template"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
