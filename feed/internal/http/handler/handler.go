@@ -1,11 +1,10 @@
-package router
+package handler
 
 import (
-	"fmt"
 	"log/slog"
 	"net/http"
 	"social-media-feed/internal/config"
-	"social-media-feed/internal/http/template"
+	"social-media-feed/internal/repository"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -13,30 +12,34 @@ import (
 	mwLogger "social-media-feed/internal/http/middleware/logger"
 )
 
-func InitRouter(cfg *config.Config,  logger *slog.Logger) (*chi.Mux, error) {
+type Handler struct {
+	logger *slog.Logger
+	repo *repository.Repository
+}
+
+func NewHandler(logger *slog.Logger, repo *repository.Repository) *Handler {
+	return &Handler{logger: logger, repo: repo}
+}
+
+func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 
 	router := chi.NewRouter()
 
 	router.Use(middleware.RequestID)
 	// r.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
-	router.Use(mwLogger.New(logger))
+	router.Use(mwLogger.New(h.logger))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.Timeout(cfg.Timeout))
+  
+	router.Get("/", h.mainPage)
 
 	router.Get("/resources/*", func(w http.ResponseWriter, r *http.Request) {
 		fs := http.StripPrefix("/resources/", http.FileServer(http.Dir("./resources")))
 		fs.ServeHTTP(w, r)
 	})
-  
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		main_html, err := template.GetFilledMainTemplate(logger)
-		if err != nil {
-			logger.Error(fmt.Sprintf("Не смогли получить сформированный шаблон: %s", err))
-		}
 
-		w.Write([]byte(main_html))
-	})
+	// Реализуйте тут свои обработчики
 
 	return router, nil
 }
