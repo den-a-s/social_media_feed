@@ -7,7 +7,7 @@ http_server:
 # TODO Доделать нормальное подключение
 db:
   username: "postgres"
-  host: "0.0.0.0"
+  host: "db"
   port: "5432"
   dbname: "postgres"
   sslmode: "disable"
