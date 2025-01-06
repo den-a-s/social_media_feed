@@ -33,13 +33,15 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	router.Use(middleware.Timeout(cfg.Timeout))
   
 	router.Get("/", h.mainPage)
-
+	
 	router.Get("/resources/*", func(w http.ResponseWriter, r *http.Request) {
 		fs := http.StripPrefix("/resources/", http.FileServer(http.Dir("./resources")))
 		fs.ServeHTTP(w, r)
 	})
 
 	// Реализуйте тут свои обработчики
+	router.Get("/createPost", h.createItem) 
+	
 
 	return router, nil
 }

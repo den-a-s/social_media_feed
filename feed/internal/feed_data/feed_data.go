@@ -4,13 +4,11 @@ import "database/sql"
 
 type Post struct {
 	Id int `json:"id" db:"id" binding:"required"`
-    Name string `json:"name" db:"name" binding:"required"`
     ImagePath string `json:"image_path" db:"image_path"`
     Content sql.NullString `json:"content" db:"content"`
 }
 
 type PostUpdateFields struct {
-    Name string
     ImagePath string
     Content string
 }

@@ -33,6 +33,15 @@
         </div>
       </div>
 
+      <div class="middle-bar-options">
+        <div class="for-crud">
+          <div><a href="http://localhost:8080/createPost">Создать</a></div>
+          <div><a href="#">Изменить</a></div>
+          <div><a href="#">Удалить</a></div>
+          <div><a href="#">Выйти</a></div>
+        </div>
+      </div>
+
       <div class="middle-bar">
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
@@ -53,28 +62,28 @@
     <script>
       // TODO Переписать когда будут состояния лайка в базе
       // Получаем все посты
-      const posts = document.querySelectorAll(".for-post")
+      const posts = document.querySelectorAll(".for-post");
 
       posts.forEach((post) => {
-        const heartButton = post.querySelector(".heart-button")
-        const dislikeButton = post.querySelector(".dislike-button")
+        const heartButton = post.querySelector(".heart-button");
+        const dislikeButton = post.querySelector(".dislike-button");
 
         heartButton.addEventListener("click", function () {
           // Если дизлайк активен, убираем его активное состояние
           if (dislikeButton.classList.contains("active")) {
-            dislikeButton.classList.remove("active")
+            dislikeButton.classList.remove("active");
           }
-          heartButton.classList.toggle("active") // Переключаем класс 'active' для сердца
-        })
+          heartButton.classList.toggle("active"); // Переключаем класс 'active' для сердца
+        });
 
         dislikeButton.addEventListener("click", function () {
           // Если сердце активно, убираем его активное состояние
           if (heartButton.classList.contains("active")) {
-            heartButton.classList.remove("active")
+            heartButton.classList.remove("active");
           }
-          dislikeButton.classList.toggle("active") // Переключаем класс 'active' для дизлайка
-        })
-      })
+          dislikeButton.classList.toggle("active"); // Переключаем класс 'active' для дизлайка
+        });
+      });
     </script>
   </body>
 </html>

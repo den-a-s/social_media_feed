@@ -18,6 +18,8 @@ func (h *Handler) createItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	http.ServeFile(w, r, "web/templates/formPost.html")
+	//w.Write([]byte(formPost))
 	// Доделать
 }
 
@@ -37,9 +39,6 @@ func (h *Handler) mainPage(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(main_html))
 }
 
-func (h *Handler) getItemById(w http.ResponseWriter, r *http.Request) {
-	
-}
 
 func (h *Handler) updateItem(w http.ResponseWriter, r *http.Request) {
 	userId, err := getUserId(r)
