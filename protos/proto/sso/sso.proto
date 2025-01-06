@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package auth;
+
+// шняга для go
+option go_package = "voronov.sso.v1;ssov1";
+
+// Группировка логически связанных сервисов.
+service Auth {
+    rpc Register (RegisterRequest) returns (RegisterResponse);  // Регистрация юзера
+    rpc Login (LoginRequset) returns (LoginResponse);           // Вход при существующем юзере
+    rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);     // Проверка на админа
+}
+
+// Описание формата данных
+message RegisterRequest {
+    string email = 1;     // Логин для регистрации
+    string password = 2;  // Пароль для регистрации
+}
+
+message RegisterResponse {
+    int64 user_id = 1;  // ID пользователя
+}
+
+message LoginRequset {
+    string email = 1;     // Логин пользователя
+    string password = 2;  // Пароль юзера
+}
+
+message LoginResponse {
+    string token = 1;  // Токен авторизации для юзера
+}
+
+message IsAdminRequest {
+    int64 user_id = 1;  // Ид юзера
+}
+
+message IsAdminResponse {
+    bool is_admin = 1; // true - админ, false иначе
+}
