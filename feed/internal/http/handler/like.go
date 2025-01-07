@@ -1,12 +1,11 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"social-media-feed/internal/fake"
 )
 
-func (h *Handler) createItem(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) createLike(w http.ResponseWriter, r *http.Request) {
 	userId, err := getUserId(r)
 	if err != nil {
 		h.newErrorResponse(w, http.StatusInternalServerError, err.Error())
@@ -21,7 +20,7 @@ func (h *Handler) createItem(w http.ResponseWriter, r *http.Request) {
 	// Доделать
 }
 
-func (h *Handler) deleteItem(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) deleteLike(w http.ResponseWriter, r *http.Request) {
 	userId, err := getUserId(r)
 	if err != nil {
 		h.newErrorResponse(w, http.StatusInternalServerError, err.Error())
