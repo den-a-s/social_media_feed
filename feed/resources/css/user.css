@@ -166,7 +166,7 @@ a:hover {
   color: red;
 }
 
-.post .dislike-button {
+.post .delete-button {
   font-size: 3em;
   color: white;
   text-shadow: -2px -2px 0 rgb(12, 23, 18), 2px -2px 0 rgb(12, 23, 18),
@@ -178,10 +178,10 @@ a:hover {
   transition: transform 0.2s; /* Плавный эффект при наведении */
 }
 
-.post .dislike-button:hover,
-.post .dislike-button.active {
+.post .delete-button:hover,
+.post .delete-button.active {
   transform: scale(1.1); /* Увеличение при наведении */
-  color: yellow;
+  color: gray;
 }
 
 .post img {

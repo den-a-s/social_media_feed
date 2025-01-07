@@ -17,9 +17,13 @@ func NewPostGatewayPostgres(db *sqlx.DB) *PostGatewayPostgres {
 }
 
 func (r *PostGatewayPostgres) Create(post feed_data.Post) (int, error) {
-
-	
-	return 0, errors.New("TODO Implement method")
+	var newID int
+    query := `INSERT INTO post (image_path, content) VALUES ($1, $2) RETURNING id`
+    err := r.db.QueryRow(query, post.ImagePath, post.Content).Scan(&newID)
+    if err != nil {
+        return 0, err
+    }
+    return newID, nil
 }
 
 func (r *PostGatewayPostgres) GetAll() ([]feed_data.Post, error) {

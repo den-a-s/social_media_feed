@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"database/sql"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"social-media-feed/internal/fake"
+	"social-media-feed/internal/feed_data"
 	"time"
 
 	"github.com/google/uuid"
@@ -64,7 +66,22 @@ func (h *Handler) postFormCreateItem(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Ошибка при записи файла", http.StatusInternalServerError)
 		return
 	}
-   
+    // Создаем экземпляр структуры Post
+    post := feed_data.Post{
+        ImagePath: filePath, // Путь к загруженному изображению
+        Content:   sql.NullString{String: textarea, Valid: true}, // Содержимое текстовой области
+    }
+	
+    // Вызов метода Create для добавления поста в базу данных
+    newID, err := h.repo.PostGateway.Create(post)
+	fmt.Println("new id is = ")
+	fmt.Println(newID)
+    if err != nil {
+        h.logger.Info(err.Error())
+        http.Error(w, "Ошибка при добавлении поста", http.StatusInternalServerError)
+        return
+    }
+
 }
 
 func (h *Handler) mainPage(w http.ResponseWriter, r *http.Request) {

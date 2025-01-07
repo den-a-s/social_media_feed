@@ -50,7 +50,7 @@
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
             <button class="heart-button">&#10084;</button>
-            <button class="dislike-button">&#128403;</button>
+            <button class="delete-button">&#x1F5D1;</button>
           </div>
         </div>
       </div>
@@ -64,22 +64,22 @@
 
       posts.forEach((post) => {
         const heartButton = post.querySelector(".heart-button");
-        const dislikeButton = post.querySelector(".dislike-button");
+        const deleteButton = post.querySelector(".delete-button");
 
         heartButton.addEventListener("click", function () {
           // Если дизлайк активен, убираем его активное состояние
-          if (dislikeButton.classList.contains("active")) {
-            dislikeButton.classList.remove("active");
+          if (deleteButton.classList.contains("active")) {
+            deleteButton.classList.remove("active");
           }
           heartButton.classList.toggle("active"); // Переключаем класс 'active' для сердца
         });
 
-        dislikeButton.addEventListener("click", function () {
+        deleteButton.addEventListener("click", function () {
           // Если сердце активно, убираем его активное состояние
           if (heartButton.classList.contains("active")) {
             heartButton.classList.remove("active");
           }
-          dislikeButton.classList.toggle("active"); // Переключаем класс 'active' для дизлайка
+          deleteButton.classList.toggle("active"); // Переключаем класс 'active' для дизлайка
         });
       });
     </script>
