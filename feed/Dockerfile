@@ -5,6 +5,7 @@ ENV SERVICE_NAME=feed
 WORKDIR /app
 
 COPY . .
+COPY --from=protos . ../protos
 
 RUN go mod download
 

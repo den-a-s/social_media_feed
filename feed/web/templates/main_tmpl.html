@@ -33,6 +33,13 @@
         </div>
       </div>
 
+      <div class="middle-bar-options">
+        <div class="for-crud">
+          <div><a href="/createPost">Создать</a></div>
+          <div><a href="#">Выйти</a></div>
+        </div>
+      </div>
+
       <div class="middle-bar">
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
@@ -42,7 +49,9 @@
           <div class="text">{{.Content}}</div>
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
-            <button class="heart-button {{if .LikeId}} active {{end}}">&#10084;</button>
+            <button class="heart-button {{if .LikeId}} active {{end}}">
+              &#10084;
+            </button>
           </div>
         </div>
       </div>

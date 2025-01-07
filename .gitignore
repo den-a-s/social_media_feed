@@ -1,2 +1,8 @@
 *local.yaml
 .env
+
+# DB
+*.db
+
+# Mac Os
+.DS_Store

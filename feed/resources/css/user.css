@@ -44,15 +44,40 @@ body {
   font-size: 7em;
   color: rgb(12, 23, 18);
   margin: 0.1em;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 0.1em solid #ccc;
+  border-radius: 0.7em;
   text-align: center;
 }
 
 .container > .middle-bar .description {
-  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: -2em;
+  font-size: 2em;
   font-family: "Caveat", cursive;
   color: rgb(104, 121, 105);
-  padding-left: 1em;
-  padding-right: 1em;
+  width: 7.5em;
+}
+
+button {
+  padding: 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 0.7em;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+button:hover {
+  background-color: #4cae4c;
 }
 
 .container > .for-post {
@@ -120,6 +145,45 @@ body {
   cursor: pointer; /* Указатель при наведении */
   outline: none; /* Убираем обводку при фокусе */
   transition: transform 0.2s; /* Плавный эффект при наведении */
+}
+
+.container > .middle-bar-options {
+  grid-column: 3/10;
+  place-items: center;
+  height: auto;
+  border-radius: 1em;
+  background-color: aliceblue;
+  border: 2px solid rgb(12, 23, 18);
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+a {
+  text-decoration: none; /* Убираем подчеркивание */
+  color: rgb(12, 23, 18);
+}
+
+a:hover {
+  color: rgb(65, 191, 132);
+}
+
+.container .middle-bar-options .for-crud {
+  display: flex;
+  font-size: 2em;
+  font-family: "Oswald";
+  color: rgb(12, 23, 18);
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  padding-left: 1em;
+  padding-right: 1em;
+  flex-direction: row;
+}
+
+.container .middle-bar-options .for-crud div {
+  margin-left: 0.5em; /* Отступы между внутренними div */
+  margin-right: 0.5em;
 }
 
 .post .heart-button:hover,

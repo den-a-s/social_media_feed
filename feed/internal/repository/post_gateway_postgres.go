@@ -17,13 +17,15 @@ func NewPostGatewayPostgres(db *sqlx.DB) *PostGatewayPostgres {
 }
 
 func (r *PostGatewayPostgres) Create(post feed_data.Post) (int, error) {
+
+	
 	return 0, errors.New("TODO Implement method")
 }
 
 func (r *PostGatewayPostgres) GetAll() ([]feed_data.Post, error) {
 	var posts []feed_data.Post
-	query := fmt.Sprintf(`SELECT id, name, image_path, content FROM post`)
-	if err := r.db.Select(&posts, query); err != nil {
+	query := fmt.Sprintf(`SELECT id, image_path, content FROM post`) 	
+	if err := r.db.Select(&posts, query); err != nil { 
 		return nil, err
 	}
 

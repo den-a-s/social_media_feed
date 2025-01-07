@@ -1,13 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
 	"social-media-feed/internal/env"
+	"social-media-feed/internal/fake"
 	"social-media-feed/internal/repository"
 
 	_ "github.com/lib/pq"
+	ssov1 "github.com/username/protos/gen/go/sso"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"social-media-feed/internal/config"
 	"social-media-feed/internal/http/handler"
@@ -37,23 +42,35 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Not connected to db: %s", err))
 	}
-	
-	res, err := db.Queryx("SELECT * FROM schema_migrations")
+
+	defer db.Close()
+
+	grpc_address := fmt.Sprintf("%s:%s", cfg.GRPCServer.Host, cfg.GRPCServer.Port)
+	conn, err := grpc.NewClient(grpc_address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		panic(fmt.Sprintf("DB select post err: %s", err))
+		panic(fmt.Sprintf("Not connected with sso server: %s", err))
 	}
 
-	logger.Info(fmt.Sprintf("res from select: %s", res))
+	defer conn.Close()
+
+	authClient := ssov1.NewAuthClient(conn)
+
+	resp, err := authClient.IsAdmin(context.Background(), &ssov1.IsAdminRequest{UserId: fake.AdminId})
+	if err != nil {
+		panic(fmt.Sprintf("Not get reponse from sso server: %s", err))
+	}
+
+	logger.Info(fmt.Sprintf("Get IsAdmin response: %s", resp))
 
 	repo := repository.NewRepository(db)
-	handler := handler.NewHandler(logger, repo)
+	handler := handler.NewHandler(logger, repo, authClient)
 
 	router, err := handler.InitRoutes(cfg)
 	if err != nil {
 		panic(fmt.Sprintf("Not init router: %s", err))
 	}
 
-	address := fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
+	http_address := fmt.Sprintf("%s:%s", cfg.HTTPServer.Host, cfg.HTTPServer.Port)
 
-	http.ListenAndServe(address, router)
+	http.ListenAndServe(http_address, router)
 }
