@@ -9,7 +9,7 @@ import (
 	"social-media-feed/internal/feed_data"
 )
 
-func (h *Handler) getFilledMainTemplate(posts []feed_data.Post) (string, error) {
+func (h *Handler) getFilledMainTemplate(postsWithLike []feed_data.PostWithLike) (string, error) {
 	tmpl, err := os.ReadFile("./web/templates/main_tmpl.html")
 	if err != nil {
 		return "", errors.New(fmt.Sprintf("Not read file: %s", err))
@@ -21,9 +21,9 @@ func (h *Handler) getFilledMainTemplate(posts []feed_data.Post) (string, error) 
 	}
 
 	data := struct {
-		Posts []feed_data.Post
+		PostsWithLike []feed_data.PostWithLike
 	}{
-		Posts: posts,
+		PostsWithLike: postsWithLike,
 	};
 
 	buf := new(bytes.Buffer)

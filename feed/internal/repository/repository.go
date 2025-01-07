@@ -24,11 +24,13 @@ type LikeGateway interface {
 type Repository struct {
 	PostGateway
 	LikeGateway
+	PostWithLikeGateway
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		PostGateway:      NewPostGatewayPostgres(db),
 		LikeGateway:      NewLikeGatewayPostgres(db),
+		PostWithLikeGateway:	  NewPostLikeGatewayPostgres(db),
 	}
 }

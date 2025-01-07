@@ -36,14 +36,13 @@
       <div class="middle-bar">
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
-      {{range .Posts}}
+      {{range .PostsWithLike}}
       <div class="for-post">
         <div class="post">
-          <div class="text">{{.Name}}</div>
+          <div class="text">{{.Content}}</div>
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
-            <button class="heart-button">&#10084;</button>
-            <button class="dislike-button">&#128403;</button>
+            <button class="heart-button {{if .LikeId}} active {{end}}">&#10084;</button>
           </div>
         </div>
       </div>
@@ -57,7 +56,6 @@
 
       posts.forEach((post) => {
         const heartButton = post.querySelector(".heart-button")
-        const dislikeButton = post.querySelector(".dislike-button")
 
         heartButton.addEventListener("click", function () {
           // Если дизлайк активен, убираем его активное состояние

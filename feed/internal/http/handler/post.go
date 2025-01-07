@@ -22,11 +22,23 @@ func (h *Handler) createItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) mainPage(w http.ResponseWriter, r *http.Request) {
-	posts, err := h.repo.PostGateway.GetAll()
+	cookie, err := r.Cookie("user_id")
+    if err != nil {
+        http.Error(w, "cookie 'user_id' не найден", http.StatusUnauthorized)
+        return
+    }
+    // Преобразуем значение cookie в целое число
+    userId, err := strconv.Atoi(cookie.Value)
+    if err != nil {
+        http.Error(w, "некорректный user_id в cookie", http.StatusBadRequest)
+        return
+    }
+	postWithLike, err := h.repo.PostLikeGatewayPostgres.JoinPostWithLike(userId)
 	if err != nil {
-		h.newErrorResponse(w, http.StatusInternalServerError, err.Error())
-		return
-	}
+        http.Error(w, "ошибка при чтении постов с лайками", http.StatusBadRequest)
+        return
+    }
+	
 
 	main_html, err := h.getFilledMainTemplate(posts)
 	if err != nil {
