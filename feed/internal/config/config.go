@@ -11,6 +11,7 @@ import (
 type Config struct {
 	Env string `yaml:"env" env-required:"true"`
 	HTTPServer `yaml:"http_server" env-required:"true"`
+	GRPCServer `yaml:"grpc_server" env-required:"true"`
 	DB `yaml:"db" env-required:"true"`
 }
 
@@ -19,6 +20,11 @@ type HTTPServer struct {
 	Port string `yaml:"port" env-required:"true"`
 	Timeout time.Duration `yaml:"timeout" env-required:"true"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-required:"true"`
+}
+
+type GRPCServer struct {
+	Host string `yaml:"host" env-required:"true"`
+	Port string `yaml:"port" env-required:"true"`
 }
 
 type DB struct {

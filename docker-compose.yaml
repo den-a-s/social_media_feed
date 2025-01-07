@@ -15,7 +15,8 @@ services:
         condition: service_started
     environment:
       - DB_PASSWORD=qwerty
-    # TODO volume для логов
+    volumes:
+      - social-media-feed-logs:/app/logs
   sso:
     build:
       context: ./sso
@@ -43,6 +44,6 @@ services:
       timeout: 3s
       retries: 5
 volumes:
+  social-media-feed-logs:
   pg_data:
-    # external: true
   sso_sqlite_db:

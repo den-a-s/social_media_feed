@@ -1,6 +1,6 @@
 FROM golang:1.23.3
 
-ENV SERVICE_NAME=client
+ENV SERVICE_NAME=feed
 
 WORKDIR /app
 

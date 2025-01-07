@@ -10,15 +10,18 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	mwLogger "social-media-feed/internal/http/middleware/logger"
+
+	ssov1 "github.com/username/protos/gen/go/sso"
 )
 
 type Handler struct {
 	logger *slog.Logger
 	repo *repository.Repository
+	authClient *ssov1.AuthClient
 }
 
-func NewHandler(logger *slog.Logger, repo *repository.Repository) *Handler {
-	return &Handler{logger: logger, repo: repo}
+func NewHandler(logger *slog.Logger, repo *repository.Repository, authClient *ssov1.AuthClient) *Handler {
+	return &Handler{logger: logger, repo: repo, authClient: authClient}
 }
 
 func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
