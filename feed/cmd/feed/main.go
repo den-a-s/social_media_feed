@@ -37,13 +37,6 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("Not connected to db: %s", err))
 	}
-	
-	res, err := db.Queryx("SELECT * FROM schema_migrations")
-	if err != nil {
-		panic(fmt.Sprintf("DB select post err: %s", err))
-	}
-
-	logger.Info(fmt.Sprintf("res from select: %s", res))
 
 	repo := repository.NewRepository(db)
 	handler := handler.NewHandler(logger, repo)

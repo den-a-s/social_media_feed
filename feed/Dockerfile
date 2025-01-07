@@ -1,10 +1,11 @@
 FROM golang:1.23.3
 
-ENV SERVICE_NAME=feed
+ENV SERVICE_NAME=client
 
 WORKDIR /app
 
 COPY . .
+COPY --from=protos . ../protos
 
 RUN go mod download
 

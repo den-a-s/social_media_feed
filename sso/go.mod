@@ -1,6 +1,6 @@
 module sso
 
-go 1.23
+go 1.23.3
 
 require github.com/username/protos v0.0.1
 
