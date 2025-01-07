@@ -39,6 +39,7 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 
 	router.Get("/auth", h.auth)
 	router.Post("/auth/registrate", h.registrate)
+	router.Post("/auth/login", h.login)
 
 	router.Get("/resources/*", func(w http.ResponseWriter, r *http.Request) {
 		fs := http.StripPrefix("/resources/", http.FileServer(http.Dir("./resources")))
@@ -46,7 +47,8 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	})
 
 	// Реализуйте тут свои обработчики
-	router.Get("/createPost", h.createItem) 
+	router.Get("/createPost", h.createItem)
 	router.Post("/createPost",h.postFormCreateItem)
 
 	return router, nil
+}
