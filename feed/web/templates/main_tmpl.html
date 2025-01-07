@@ -35,9 +35,7 @@
 
       <div class="middle-bar-options">
         <div class="for-crud">
-          <div><a href="http://localhost:8080/createPost">Создать</a></div>
-          <div><a href="#">Изменить</a></div>
-          <div><a href="#">Удалить</a></div>
+          <div><a href="/createPost">Создать</a></div>
           <div><a href="#">Выйти</a></div>
         </div>
       </div>
@@ -48,7 +46,7 @@
       {{range .Posts}}
       <div class="for-post">
         <div class="post">
-          <div class="text">{{.Name}}</div>
+          <div class="text">{{.Content}}</div>
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
             <button class="heart-button">&#10084;</button>

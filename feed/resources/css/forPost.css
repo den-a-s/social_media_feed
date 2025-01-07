@@ -123,7 +123,7 @@ textarea {
 #preview {
   margin: 2em;
   width: auto;
-  height: 50%;
+  height: 20em;
   border-radius: 1em;
   display: none; /* Скрываем изображение по умолчанию */
 }
@@ -188,7 +188,7 @@ textarea {
 .post img {
   margin: 2em;
   width: auto;
-  height: 70%;
+  height: 20em;
   border-radius: 1em;
 }
 .container blockquote {
