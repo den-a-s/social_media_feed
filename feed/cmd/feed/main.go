@@ -63,7 +63,7 @@ func main() {
 	logger.Info(fmt.Sprintf("Get IsAdmin response: %s", resp))
 
 	repo := repository.NewRepository(db)
-	handler := handler.NewHandler(logger, repo, &authClient)
+	handler := handler.NewHandler(logger, repo, authClient)
 
 	router, err := handler.InitRoutes(cfg)
 	if err != nil {

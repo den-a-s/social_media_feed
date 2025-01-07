@@ -44,15 +44,40 @@ body {
   font-size: 7em;
   color: rgb(12, 23, 18);
   margin: 0.1em;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 0.1em solid #ccc;
+  border-radius: 0.7em;
   text-align: center;
 }
 
 .container > .middle-bar .description {
-  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: -2em;
+  font-size: 2em;
   font-family: "Caveat", cursive;
   color: rgb(104, 121, 105);
-  padding-left: 1em;
-  padding-right: 1em;
+  width: 7.5em;
+}
+
+button {
+  padding: 10px;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 0.7em;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+button:hover {
+  background-color: #4cae4c;
 }
 
 .container > .for-post {
