@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  social-media-feed:
+    build:
+      context: ./feed
+      additional_contexts:
+        protos: ./protos
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      sso:
+        condition: service_started
+    environment:
+      - DB_PASSWORD=qwerty
+    volumes:
+      - social-media-feed-logs:/app/logs
+      - social-media-feed-images:/app/resources/postImg
+  sso:
+    build:
+      context: ./sso
+      additional_contexts:
+        protos: ./protos
+    ports:
+      - 44044:44044
+    environment:
+      - DB_PASSWORD=qwerty
+    volumes:
+      - sso_sqlite_db:/app/storage
+    # TODO volume для логов
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - 6432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+volumes:
+  social-media-feed-logs:
+  social-media-feed-images:
+  pg_data:
+  sso_sqlite_db:

@@ -10,15 +10,18 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	mwLogger "social-media-feed/internal/http/middleware/logger"
+
+	ssov1 "github.com/username/protos/gen/go/sso"
 )
 
 type Handler struct {
 	logger *slog.Logger
 	repo *repository.Repository
+	authClient ssov1.AuthClient
 }
 
-func NewHandler(logger *slog.Logger, repo *repository.Repository) *Handler {
-	return &Handler{logger: logger, repo: repo}
+func NewHandler(logger *slog.Logger, repo *repository.Repository, authClient ssov1.AuthClient) *Handler {
+	return &Handler{logger: logger, repo: repo, authClient: authClient}
 }
 
 func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
@@ -33,7 +36,10 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	router.Use(middleware.Timeout(cfg.Timeout))
   
 	router.Get("/", h.mainPage)
-	
+
+	router.Get("/auth", h.auth)
+	router.Post("/auth/registrate", h.registrate)
+
 	router.Get("/resources/*", func(w http.ResponseWriter, r *http.Request) {
 		fs := http.StripPrefix("/resources/", http.FileServer(http.Dir("./resources")))
 		fs.ServeHTTP(w, r)
@@ -44,4 +50,3 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	router.Post("/createPost",h.postFormCreateItem)
 
 	return router, nil
-}
