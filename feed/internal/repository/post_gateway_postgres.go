@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"social-media-feed/internal/feed_data"
@@ -37,11 +38,26 @@ func (r *PostGatewayPostgres) GetAll() ([]feed_data.Post, error) {
 }
 
 func (r *PostGatewayPostgres) GetById(postId int) (feed_data.Post, error) {
-	return feed_data.Post{}, errors.New("TODO Implement method")
+	query:=`SELECT * FROM post WHERE id = $1`
+	
+	var post feed_data.Post
+    err := r.db.QueryRow(query, postId).Scan(&post.Id, &post.ImagePath, &post.Content) 
+
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return feed_data.Post{}, errors.New("post not found")
+        }
+        return feed_data.Post{}, err 
+    }
+
+    return post, nil 
 }
 
 func (r *PostGatewayPostgres) Delete(postId int) error {
-	return errors.New("TODO Implement method")
+	
+    query := `DELETE FROM post WHERE id = $1`
+    _, err := r.db.Exec(query, postId)
+	return err
 }
 
 func (r *PostGatewayPostgres) Update(postId int, input feed_data.PostUpdateFields) error {

@@ -58,7 +58,7 @@
             >
               &#10084;
             </button>
-            <button class="delete-button">&#x1F5D1;</button>
+            <button class="delete-button" id="post-{{.Id}}">&#x1F5D1;</button>
           </div>
         </div>
       </div>
@@ -68,30 +68,53 @@
     <script>
       // TODO Переписать когда будут состояния лайка в базе
       // Получаем все посты
-      const posts = document.querySelectorAll(".for-post")
+      const posts = document.querySelectorAll(".for-post");
 
       posts.forEach((post) => {
-        const heartButton = post.querySelector(".heart-button")
-        const deleteButton = post.querySelector(".delete-button")
+        const heartButton = post.querySelector(".heart-button");
+        const deleteButton = post.querySelector(".delete-button");
+        let idPost = deleteButton.id;
+        if (idPost.startsWith("post-")) {
+          // Убираем префикс "post-"
+          idPost = idPost.slice(5);
+        }
+        const url = `/deletePost?idPost=${encodeURIComponent(idPost)}`;
 
         heartButton.addEventListener("click", function () {
           // Если лайк активен, убираем его активное состояние
           if (heartButton.classList.contains("active")) {
-            heartButton.classList.remove("active")
+            heartButton.classList.remove("active");
           } else {
-            heartButton.classList.toggle("active")
+            heartButton.classList.toggle("active");
           }
-        })
+        });
 
         deleteButton.addEventListener("click", function () {
-          // Если сердце активно, убираем его активное состояние
           if (deleteButton.classList.contains("active")) {
-            deleteButton.classList.remove("active")
+            deleteButton.classList.remove("active");
           } else {
-            deleteButton.classList.toggle("active")
+            deleteButton.classList.toggle("active");
+            fetch(url, { method: "POST" })
+              .then((response) => {
+                if (response.ok) {
+                  return response.text();
+                } else {
+                  throw new Error("Ошибка удаления");
+                }
+              })
+              .then((data) => {
+                // Обработка успешного ответа
+                alert(`Удаление прошло успешно: ${data}`);
+                window.location.href = "/";
+              })
+              .catch((error) => {
+                // Обработка ошибки
+                console.error("Ошибка:", error);
+                alert("Не удалось удалить пост");
+              });
           }
-        })
-      })
+        });
+      });
     </script>
   </body>
 </html>
