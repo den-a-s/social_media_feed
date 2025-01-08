@@ -44,7 +44,7 @@
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
       {{range .PostsWithLike}}
-      <div class="for-post">
+      <div class="for-post" id="post-{{.Id}}">
         <div class="post">
           <div class="text">
             {{if .Content.Valid}}{{.Content.String}}{{end}}
@@ -58,7 +58,7 @@
             >
               &#10084;
             </button>
-            <button class="delete-button" id="post-{{.Id}}">&#x1F5D1;</button>
+            <button class="delete-button">&#x1F5D1;</button>
           </div>
         </div>
       </div>
@@ -71,12 +71,10 @@
       posts.forEach((post) => {
         const heartButton = post.querySelector(".heart-button")
         const deleteButton = post.querySelector(".delete-button")
+        console.log(post.id)
+        console.log(heartButton.id)
         const post_id = post.id.slice(5)
         const like_id = heartButton.id.slice(5)
-
-        const delete_post_url = `/deletePost?idPost=${encodeURIComponent(
-          post_id
-        )}`
 
         // Формируем URL для запроса
         const like_change_url = `/changingLike?post_id=${encodeURIComponent(
@@ -87,6 +85,12 @@
           fetch(like_change_url, { method: "POST" })
             .then((response) => {
               if (response.ok) {
+                // Если лайк активен, убираем его активное состояние
+                if (heartButton.classList.contains("active")) {
+                  heartButton.classList.remove("active")
+                } else {
+                  heartButton.classList.toggle("active")
+                }
                 return response.text()
               } else {
                 throw new Error("Ошибка смены лайка")
@@ -97,14 +101,11 @@
               console.error("Ошибка:", error)
               alert("Не удалось поменять лайк")
             })
-          // Если лайк активен, убираем его активное состояние
-          if (heartButton.classList.contains("active")) {
-            heartButton.classList.remove("active")
-          } else {
-            heartButton.classList.toggle("active")
-          }
         })
 
+        const delete_post_url = `/deletePost?idPost=${encodeURIComponent(
+          post_id
+        )}`
         deleteButton.addEventListener("click", function () {
           if (deleteButton.classList.contains("active")) {
             deleteButton.classList.remove("active")

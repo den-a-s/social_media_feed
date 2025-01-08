@@ -14,7 +14,7 @@ type PostGateway interface {
 }
 
 type LikeGateway interface {
-	Create(like feed_data.Like) (int, error)
+	Create(like feed_data.Like) error
 	// GetAll(userId int) ([]feed_data.Like, error)
 	GetById(likeId int) ([]feed_data.Like, error)
 	Delete(likeId int) error

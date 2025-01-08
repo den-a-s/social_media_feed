@@ -17,19 +17,10 @@ func NewLikeGatewayPostgres(db *sqlx.DB) *LikeGatewayPostgres {
 	return &LikeGatewayPostgres{db: db}
 }
 
-func (r *LikeGatewayPostgres) Create(like feed_data.Like) (int, error) {
-	query := `INSERT INTO like (post_id, user_id) VALUES ($1, $2)`
-	result, err := r.db.Exec(query, like.PostId, like.UserId)
-	if err != nil {
-		// log.Printf("Ошибка при вставке лайка: %v", err)
-		return 0, errors.New(fmt.Sprintf("Error with adding a like: %s", err))
-	}
-	insertedID, err := result.LastInsertId()
-	if err != nil {
-		// log.Printf("Ошибка при получении ID новой записи: %v", err)
-		return 0, errors.New(fmt.Sprintf("Error with getting Id of new record: %s", err))
-	}
-	return int(insertedID), nil
+func (r *LikeGatewayPostgres) Create(like feed_data.Like) error {
+	query := `INSERT INTO "like" (post_id, user_id) VALUES ($1, $2)`
+	_, err := r.db.Exec(query, like.PostId, like.UserId)
+	return err
 }
 
 // func (r *LikeGatewayPostgres) GetAll(userId int) ([]feed_data.Like, error) {
@@ -45,7 +36,7 @@ func (r *LikeGatewayPostgres) Create(like feed_data.Like) (int, error) {
 func (r *LikeGatewayPostgres) GetById(likeId int) ([]feed_data.Like, error) {
 	var optional_like []feed_data.Like
 	var like feed_data.Like
-	query := `SELECT * FROM like WHERE id = $1`
+	query := `SELECT * FROM "like: WHERE id = $1`
 	if err := r.db.Get(&like, query, likeId); err != nil {
 		if err == sql.ErrNoRows {
 			return optional_like, nil
@@ -57,7 +48,7 @@ func (r *LikeGatewayPostgres) GetById(likeId int) ([]feed_data.Like, error) {
 }
 
 func (r *LikeGatewayPostgres) Delete(likeId int) error {
-	query := fmt.Sprintf(`DELETE FROM like WHERE id = %d`, likeId)
+	query := fmt.Sprintf(`DELETE FROM "like" WHERE id = %d`, likeId)
 	result, err := r.db.Exec(query)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error with deleting a like: %s", err))

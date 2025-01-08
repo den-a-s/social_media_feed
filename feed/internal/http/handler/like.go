@@ -24,20 +24,18 @@ func (h *Handler) changingLike(w http.ResponseWriter, r *http.Request) {
 
 	like_id := params.Get("like_id")
 	post_id := params.Get("post_id")
-	int_post_id, err := strconv.Atoi(post_id)
-	if err != nil {
-		err_str := fmt.Sprintf("[like] Error with converting post_id: %s", err)
-		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
-		return
-	}
 
 	h.logger.Debug("data:", "like_id", like_id)
 
 	if like_id == "" {
+		int_post_id, err := strconv.Atoi(post_id)
+		if err != nil {
+			err_str := fmt.Sprintf("[like] Error with converting post_id: %s", err)
+			h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+			return
+		}
 		like := feed_data.Like{PostId: int_post_id, UserId: userId}
-		newID, err := h.repo.LikeGateway.Create(like)
-		fmt.Println("new id is = ")
-		fmt.Println(newID)
+		err = h.repo.LikeGateway.Create(like)
 		if err != nil {
 			h.logger.Error(err.Error())
 			http.Error(w, "Error with creating like", http.StatusInternalServerError)
