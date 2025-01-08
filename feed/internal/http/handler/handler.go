@@ -15,8 +15,8 @@ import (
 )
 
 type Handler struct {
-	logger *slog.Logger
-	repo *repository.Repository
+	logger     *slog.Logger
+	repo       *repository.Repository
 	authClient ssov1.AuthClient
 }
 
@@ -34,7 +34,7 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	router.Use(mwLogger.New(h.logger))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.Timeout(cfg.Timeout))
-  
+
 	router.Get("/", h.mainPage)
 
 	router.Get("/auth", h.auth)
@@ -49,6 +49,8 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 	// Реализуйте тут свои обработчики
 	router.Get("/createPost", h.createPost)
 	router.Post("/createPost", h.postFormCreateItem)
+
+	router.Post("/changingLike", h.changingLike)
 
 	return router, nil
 }

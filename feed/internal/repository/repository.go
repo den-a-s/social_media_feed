@@ -17,8 +17,8 @@ type PostGateway interface {
 type LikeGateway interface {
 	Create(like feed_data.Like) (int, error)
 	// GetAll(userId int) ([]feed_data.Like, error)
-	// GetById(userId, postId int) (feed_data.Like, error)
-	Delete(userId, postId int) error
+	GetById(likeId int) ([]feed_data.Like, error)
+	Delete(likeId int) error
 }
 
 type PostsWithLikeGateway interface {
@@ -33,8 +33,8 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		PostGateway:      NewPostGatewayPostgres(db),
-		LikeGateway:      NewLikeGatewayPostgres(db),
-		PostsWithLikeGateway:	  NewPostLikeGatewayPostgres(db),
+		PostGateway:          NewPostGatewayPostgres(db),
+		LikeGateway:          NewLikeGatewayPostgres(db),
+		PostsWithLikeGateway: NewPostLikeGatewayPostgres(db),
 	}
 }

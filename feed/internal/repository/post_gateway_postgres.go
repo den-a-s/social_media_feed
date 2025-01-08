@@ -18,18 +18,18 @@ func NewPostGatewayPostgres(db *sqlx.DB) *PostGatewayPostgres {
 
 func (r *PostGatewayPostgres) Create(post feed_data.Post) (int, error) {
 	var newID int
-    query := `INSERT INTO post (image_path, content) VALUES ($1, $2) RETURNING id`
-    err := r.db.QueryRow(query, post.ImagePath, post.Content).Scan(&newID)
-    if err != nil {
-        return 0, err
-    }
-    return newID, nil
+	query := `INSERT INTO post (image_path, content) VALUES ($1, $2) RETURNING id`
+	err := r.db.QueryRow(query, post.ImagePath, post.Content).Scan(&newID)
+	if err != nil {
+		return 0, err
+	}
+	return newID, nil
 }
 
 func (r *PostGatewayPostgres) GetAll() ([]feed_data.Post, error) {
 	var posts []feed_data.Post
-	query := fmt.Sprintf(`SELECT id, image_path, content FROM post`) 	
-	if err := r.db.Select(&posts, query); err != nil { 
+	query := fmt.Sprintf(`SELECT id, image_path, content FROM post`)
+	if err := r.db.Select(&posts, query); err != nil {
 		return nil, err
 	}
 

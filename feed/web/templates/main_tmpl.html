@@ -73,8 +73,28 @@
       posts.forEach((post) => {
         const heartButton = post.querySelector(".heart-button")
         const deleteButton = post.querySelector(".delete-button")
+        const post_id = post.id.slice(5)
+        const like_id = heartButton.id.slice(5)
 
+        // Формируем URL для запроса
+      const url = `/changingLike?post_id=${encodeURIComponent(
+        post_id
+      )}&like_id=${encodeURIComponent(like_id)}`
         heartButton.addEventListener("click", function () {
+          // Выполняем HTTP-запрос
+        fetch(url, { method: "POST" })
+          .then((response) => {
+            if (response.ok) {
+              return response.text()
+            } else {
+              throw new Error("Ошибка смены лайка")
+            }
+          })
+          .catch((error) => {
+            // Обработка ошибки
+            console.error("Ошибка:", error)
+            alert("Не удалось поменять лайк")
+          })
           // Если лайк активен, убираем его активное состояние
           if (heartButton.classList.contains("active")) {
             heartButton.classList.remove("active")

@@ -18,7 +18,7 @@ type Config struct {
 
 func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 	db_connected_string := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-	cfg.Host, cfg.Port, cfg.Username, cfg.DBName, os.Getenv("DB_PASSWORD"), cfg.SSLMode)
+		cfg.Host, cfg.Port, cfg.Username, cfg.DBName, os.Getenv("DB_PASSWORD"), cfg.SSLMode)
 
 	db, err := sqlx.Connect("postgres", db_connected_string)
 	if err != nil {

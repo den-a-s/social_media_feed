@@ -23,14 +23,14 @@ func (h *Handler) auth(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) registrate(w http.ResponseWriter, r *http.Request) {
-	
+
 	params, err := url.ParseQuery(r.URL.RawQuery)
 	if err != nil {
 		err_str := fmt.Sprintf("[registrate] Not get url params: %s", err)
 		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
 		return
 	}
-	
+
 	login := params.Get("login")
 	password := params.Get("password")
 
@@ -60,14 +60,14 @@ func (h *Handler) registrate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
-	
+
 	params, err := url.ParseQuery(r.URL.RawQuery)
 	if err != nil {
 		err_str := fmt.Sprintf("[login] Not get url params: %s", err)
 		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
 		return
 	}
-	
+
 	login := params.Get("login")
 	password := params.Get("password")
 
@@ -91,7 +91,6 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 	cookie_token := http.Cookie{Name: "token", Value: resp.Token}
 	// TODO поменять на реальный user_id
 	cookie_user_id := http.Cookie{Name: "user_id", Value: strconv.FormatInt(fake.AdminId, 10)}
-	
 
 	http.SetCookie(w, &cookie_token)
 	http.SetCookie(w, &cookie_user_id)

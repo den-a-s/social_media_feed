@@ -15,7 +15,6 @@ func NewPostLikeGatewayPostgres(db *sqlx.DB) *PostLikeGatewayPostgres {
 	return &PostLikeGatewayPostgres{db: db}
 }
 
-
 func (r *PostLikeGatewayPostgres) JoinPostWithLike(userId int) ([]feed_data.PostWithLike, error) {
 	var postsWithLike []feed_data.PostWithLike
 	query := fmt.Sprintf(`SELECT p.id AS id, 
