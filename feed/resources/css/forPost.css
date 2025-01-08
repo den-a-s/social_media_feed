@@ -30,7 +30,7 @@ body {
 .middle-bar .bar .elem {
   display: flex;
   width: 25em;
-  height: 60em;
+  height: 40em;
   margin: 1em;
   align-items: center;
   justify-content: center;
