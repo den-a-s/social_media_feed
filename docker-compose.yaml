@@ -29,7 +29,6 @@ services:
       - DB_PASSWORD=qwerty
     volumes:
       - sso_sqlite_db:/app/storage
-    # TODO volume для логов
   postgres:
     restart: always
     image: postgres:latest
