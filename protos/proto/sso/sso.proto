@@ -29,6 +29,7 @@ message LoginRequset {
 
 message LoginResponse {
     string token = 1;  // Токен авторизации для юзера
+    int64 user_id = 2;
 }
 
 message IsAdminRequest {

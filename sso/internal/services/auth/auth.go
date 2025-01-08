@@ -54,7 +54,7 @@ func (a *Auth) Login(
 	ctx context.Context,
 	email string,
 	password string,
-) (string, error) {
+) (string, int64, error) {
 	const op = "Auth.Login"
 	log := a.log.With(slog.String("op", op), slog.String("email", email))
 
@@ -64,14 +64,14 @@ func (a *Auth) Login(
 	if err != nil {
 		if errors.Is(err, storage.ErrUserNotFound) {
 			a.log.Warn("user not found", slog.String("error", err.Error()))
-			return "", fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
+			return "", 0, fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
 		}
 		a.log.Error("failed to get user", slog.String("error", err.Error()))
-		return "", fmt.Errorf("%s: %w", op, err)
+		return "", 0, fmt.Errorf("%s: %w", op, err)
 	}
 	if err := bcrypt.CompareHashAndPassword(user.PassHash, []byte(password)); err != nil {
 		a.log.Warn("invalid credentials", slog.String("error", err.Error()))
-		return "", fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
+		return "", 0, fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
 	}
 
 	log.Info("finish login user")
@@ -79,9 +79,9 @@ func (a *Auth) Login(
 	token, err := jwt.NewToken(user, a.tokenTTL)
 	if err != nil {
 		a.log.Error("failed to generate token", slog.String("error", err.Error()))
-		return "", fmt.Errorf("%s: %w", op, err)
+		return "", 0, fmt.Errorf("%s: %w", op, err)
 	}
-	return token, nil
+	return token, user.ID, nil
 }
 
 func (a *Auth) RegisterNewUser(

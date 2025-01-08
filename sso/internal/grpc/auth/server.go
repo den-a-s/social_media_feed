@@ -10,7 +10,10 @@ import (
 )
 
 type Auth interface {
-	Login(ctx context.Context, email string, password string) (token string, err error)
+	Login(
+		ctx context.Context,
+		email string, password string,
+	) (token string, user_id int64, err error)
 	RegisterNewUser(ctx context.Context, email string, password string) (userID int64, err error)
 	IsAdmin(ctx context.Context, userID int64) (isAdmin bool, err error)
 }
@@ -40,13 +43,14 @@ func (s *serverAPI) Login(
 		return nil, status.Error(codes.InvalidArgument, "password is required")
 	}
 
-	token, err := s.auth.Login(ctx, req.GetEmail(), req.GetPassword())
+	token, user_id, err := s.auth.Login(ctx, req.GetEmail(), req.GetPassword())
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal error")
 	}
 
 	return &ssov1.LoginResponse{
-		Token: token,
+		Token:  token,
+		UserId: user_id,
 	}, nil
 }
 
