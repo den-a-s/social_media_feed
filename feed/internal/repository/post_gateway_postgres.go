@@ -59,7 +59,3 @@ func (r *PostGatewayPostgres) Delete(postId int) error {
     _, err := r.db.Exec(query, postId)
 	return err
 }
-
-func (r *PostGatewayPostgres) Update(postId int, input feed_data.PostUpdateFields) error {
-	return errors.New("TODO Implement method")
-}

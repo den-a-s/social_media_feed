@@ -7,7 +7,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// TODO: подумать где его хранить
 const secret = "test-secret"
 
 func NewToken(user model.User, duration time.Duration) (string, error) {

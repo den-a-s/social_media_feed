@@ -171,7 +171,5 @@ func (h *Handler) deletePost(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-
 	w.WriteHeader(http.StatusOK)
-	// Доделать
 }
