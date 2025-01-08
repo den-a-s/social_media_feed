@@ -43,13 +43,15 @@
       <div class="middle-bar">
         <div class="posts"><b>Посты сообщества</b></div>
       </div>
-      {{range .Posts}}
+      {{range .PostsWithLike}}
       <div class="for-post">
         <div class="post">
           <div class="text">{{.Content}}</div>
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
-            <button class="heart-button">&#10084;</button>
+            <button class="heart-button {{if .LikeId}}active{{end}}">
+              &#10084;
+            </button>
             <button class="delete-button">&#x1F5D1;</button>
           </div>
         </div>
@@ -60,28 +62,30 @@
     <script>
       // TODO Переписать когда будут состояния лайка в базе
       // Получаем все посты
-      const posts = document.querySelectorAll(".for-post");
+      const posts = document.querySelectorAll(".for-post")
 
       posts.forEach((post) => {
-        const heartButton = post.querySelector(".heart-button");
-        const deleteButton = post.querySelector(".delete-button");
+        const heartButton = post.querySelector(".heart-button")
+        const deleteButton = post.querySelector(".delete-button")
 
         heartButton.addEventListener("click", function () {
-          // Если дизлайк активен, убираем его активное состояние
-          if (deleteButton.classList.contains("active")) {
-            deleteButton.classList.remove("active");
+          // Если лайк активен, убираем его активное состояние
+          if (heartButton.classList.contains("active")) {
+            heartButton.classList.remove("active")
+          } else {
+            heartButton.classList.toggle("active")
           }
-          heartButton.classList.toggle("active"); // Переключаем класс 'active' для сердца
-        });
+        })
 
         deleteButton.addEventListener("click", function () {
           // Если сердце активно, убираем его активное состояние
-          if (heartButton.classList.contains("active")) {
-            heartButton.classList.remove("active");
+          if (deleteButton.classList.contains("active")) {
+            deleteButton.classList.remove("active")
+          } else {
+            deleteButton.classList.toggle("active")
           }
-          deleteButton.classList.toggle("active"); // Переключаем класс 'active' для дизлайка
-        });
-      });
+        })
+      })
     </script>
   </body>
 </html>

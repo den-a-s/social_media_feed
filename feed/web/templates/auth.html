@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MАТ F*CK - Auth</title>
+    <link rel="stylesheet" type="text/css" href="resources\css\user.css" />
+    <link rel="icon" type="image/x-icon" href="resources/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="middle-bar">
+        <div class="name-of-public"><h2>Авторизация в MАТ F*CK</h2></div>
+        <div class="bar">
+          <div class="elem">
+            <img src="resources\mathboss_blur.jpg" alt="" />
+          </div>
+          <div class="elem">
+            <div class="description">
+              <input id="login" type="text" placeholder="Логин" required />
+              <input
+                id="password"
+                type="password"
+                placeholder="Пароль"
+                required
+              />
+              <button onclick="event.preventDefault(); registrateUser();">
+                Зарегистрироваться
+              </button>
+              <button onclick="event.preventDefault(); loginUser();">
+                Войти
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function registrateUser() {
+      // Получаем значения логина и пароля
+      const login = document.getElementById("login").value
+      const password = document.getElementById("password").value
+
+      // Проверяем, что поля не пустые
+      if (!login || !password) {
+        alert("Пожалуйста, заполните все поля")
+        return
+      }
+
+      // Формируем URL для запроса
+      const url = `/auth/registrate?login=${encodeURIComponent(
+        login
+      )}&password=${encodeURIComponent(password)}`
+
+      // Выполняем HTTP-запрос
+      fetch(url, { method: "POST" })
+        .then((response) => {
+          if (response.ok) {
+            return response.text()
+          } else {
+            throw new Error("Ошибка регистрации")
+          }
+        })
+        .then((data) => {
+          // Обработка успешного ответа
+          alert(`Регистрация успешна: ${data}`)
+        })
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("Ошибка:", error)
+          alert("Не удалось выполнить регистрацию")
+        })
+    }
+
+    function loginUser() {
+      // Получаем значения логина и пароля
+      const login = document.getElementById("login").value
+      const password = document.getElementById("password").value
+
+      // Проверяем, что поля не пустые
+      if (!login || !password) {
+        alert("Пожалуйста, заполните все поля")
+        return
+      }
+
+      // Формируем URL для запроса
+      const url = `/auth/login?login=${encodeURIComponent(
+        login
+      )}&password=${encodeURIComponent(password)}`
+
+      // Выполняем HTTP-запрос
+      fetch(url, { method: "POST" })
+        .then((response) => {
+          if (response.ok) {
+            return response.text()
+          } else {
+            throw new Error(`Ошибка авторизации ${response.statusText}`)
+          }
+        })
+        .then((data) => {
+          // Обработка успешного ответа
+          alert(`Авторизация успешна: ${data}`)
+
+          window.location.assign("/")
+        })
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("Ошибка:", error)
+          alert("Не удалось выполнить авторизацию")
+        })
+    }
+  </script>
+</html>
