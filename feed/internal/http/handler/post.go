@@ -35,12 +35,13 @@ func (h *Handler) createPost(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) postFormCreateItem(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20) // Ограничение на 10 МБ
 	if err != nil {
-       h.logger.Info(err.Error())
+       h.logger.Error(err.Error())
+	   return
     }
 	textarea := r.FormValue("textarea")
 	file, fileHeader, err := r.FormFile("fileInput")
     if err != nil {
-        h.logger.Info(err.Error())
+        h.logger.Error(err.Error())
         http.Error(w, "Ошибка при получении файла", http.StatusBadRequest)
         return
     }
@@ -79,7 +80,7 @@ func (h *Handler) postFormCreateItem(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("new id is = ")
 	fmt.Println(newID)
     if err != nil {
-        h.logger.Info(err.Error())
+        h.logger.Error(err.Error())
         http.Error(w, "Ошибка при добавлении поста", http.StatusInternalServerError)
         return
     }

@@ -48,7 +48,7 @@ func (h *Handler) InitRoutes(cfg *config.Config) (*chi.Mux, error) {
 
 	// Реализуйте тут свои обработчики
 	router.Get("/createPost", h.createPost)
-	router.Post("/createPost",h.postFormCreateItem)
+	router.Post("/createPost", h.postFormCreateItem)
 
 	return router, nil
 }

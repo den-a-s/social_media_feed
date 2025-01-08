@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"social-media-feed/internal/feed_data"
 	"fmt"
+	"social-media-feed/internal/feed_data"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -18,13 +19,12 @@ func NewPostLikeGatewayPostgres(db *sqlx.DB) *PostLikeGatewayPostgres {
 func (r *PostLikeGatewayPostgres) JoinPostWithLike(userId int) ([]feed_data.PostWithLike, error) {
 	var postsWithLike []feed_data.PostWithLike
 	query := fmt.Sprintf(`SELECT p.id AS id, 
-	p.name AS name, 
 	p.image_path AS image_path, 
 	p.content AS content, 
 	li.id AS like_id, 
 	li.user_id AS user_id 
 	FROM post p 
-	RIGHT JOIN "like" li ON p.id = li.post_id AND li.user_id = $1;`)
+	LEFT JOIN "like" li ON p.id = li.post_id AND li.user_id = $1;`)
 	if err := r.db.Select(&postsWithLike, query, userId); err != nil {
 		return nil, err
 	}

@@ -46,10 +46,16 @@
       {{range .PostsWithLike}}
       <div class="for-post">
         <div class="post">
-          <div class="text">{{.Content}}</div>
+          <div class="text">
+            {{if .Content.Valid}}{{.Content.String}}{{end}}
+          </div>
           <img src="{{.ImagePath}}" alt="" />
           <div class="for-buttons">
-            <button class="heart-button {{if .LikeId}}active{{end}}">
+            <button
+              class="heart-button {{if .LikeId.Valid}}active{{end}}"
+              {{if.LikeId.Valid}}id="like-{{.LikeId.Int64}}"
+              {{end}}
+            >
               &#10084;
             </button>
             <button class="delete-button">&#x1F5D1;</button>

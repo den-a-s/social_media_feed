@@ -4,7 +4,7 @@ import "database/sql"
 
 type Post struct {
 	Id int `json:"id" db:"id" binding:"required"`
-    ImagePath string `json:"image_path" db:"image_path"`
+    ImagePath string `json:"image_path" db:"image_path" binding:"required"`
     Content sql.NullString `json:"content" db:"content"`
 }
 
@@ -21,8 +21,7 @@ type Like struct {
 
 type PostWithLike struct {
     Id int `json:"id" db:"id" binding:"required"`
-    Name string `json:"name" db:"name" binding:"required"`
-    ImagePath string `json:"image_path" db:"image_path"`
+    ImagePath string `json:"image_path" db:"image_path" binding:"required"`
     Content sql.NullString `json:"content" db:"content"`
     LikeId sql.NullInt64 `json:"like_id" db:"like_id" binding:"required"`
     UserId sql.NullInt64 `json:"user_id" db:"user_id" binding:"required"`  

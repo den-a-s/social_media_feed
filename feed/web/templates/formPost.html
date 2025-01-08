@@ -35,38 +35,53 @@
     </div>
 
     <script>
-      const fileInput = document.getElementById("fileInput");
-      const preview = document.getElementById("preview");
-      const publishButton = document.getElementById("publishButton");
+      const fileInput = document.getElementById("fileInput")
+      const preview = document.getElementById("preview")
+      const publishButton = document.getElementById("publishButton")
 
       fileInput.addEventListener("change", function () {
-        const file = fileInput.files[0]; // Получаем выбранный файл
+        const file = fileInput.files[0] // Получаем выбранный файл
         if (file) {
-          const reader = new FileReader(); // Создаем объект FileReader
+          const reader = new FileReader() // Создаем объект FileReader
           reader.onload = function (e) {
-            preview.src = e.target.result; // Устанавливаем источник изображения
-            preview.style.display = "block"; // Показываем изображение
-          };
-          reader.readAsDataURL(file); // Читаем файл как URL
+            preview.src = e.target.result // Устанавливаем источник изображения
+            preview.style.display = "block" // Показываем изображение
+          }
+          reader.readAsDataURL(file) // Читаем файл как URL
         }
-      });
+      })
 
       publishButton.addEventListener("click", function () {
-        const textInput = document.querySelector("textarea").value; // Получаем текст из textarea
-        const file = fileInput.files[0]; // Получаем выбранный файл
-        const formData = new FormData();
+        const textInput = document.querySelector("textarea").value // Получаем текст из textarea
+        const file = fileInput.files[0] // Получаем выбранный файл
+        const formData = new FormData()
         if (file) {
-          formData.append("textarea", textInput);
-          formData.append("fileInput", file);
+          formData.append("textarea", textInput)
+          formData.append("fileInput", file)
           fetch("/createPost", {
             method: "POST",
             body: formData,
-          });
-          window.location.href = "/";
+          })
+            .then((response) => {
+              if (response.ok) {
+                return response.text()
+              } else {
+                throw new Error(`Ошибка при создании поста ${response.text()}`)
+              }
+            })
+            .then((data) => {
+              alert("Пост был успешно создан")
+              // window.location.href = "/"
+            })
+            .catch((error) => {
+              // Обработка ошибки
+              console.error("Ошибка:", error)
+              alert("Не удалось создать пост")
+            })
         } else {
-          alert("Пожалуйста, выберите обязательно изображение для публикации.");
+          alert("Пожалуйста, выберите обязательно изображение для публикации.")
         }
-      });
+      })
     </script>
   </body>
 </html>
