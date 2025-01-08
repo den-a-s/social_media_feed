@@ -46,38 +46,12 @@ body {
   margin: 0.1em;
 }
 
-input {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 0.1em solid #ccc;
-  border-radius: 0.7em;
-  text-align: center;
-}
-
 .container > .middle-bar .description {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: -2em;
-  font-size: 2em;
+  font-size: 1.5em;
   font-family: "Caveat", cursive;
   color: rgb(104, 121, 105);
-  width: 7.5em;
-}
-
-button {
-  padding: 10px;
-  background-color: #5cb85c;
-  color: white;
-  border: none;
-  border-radius: 0.7em;
-  cursor: pointer;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-button:hover {
-  background-color: #4cae4c;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .container > .for-post {
@@ -167,7 +141,7 @@ a:hover {
   color: rgb(65, 191, 132);
 }
 
-.container .middle-bar-options .for-crud {
+.container > .middle-bar-options .for-crud {
   display: flex;
   font-size: 2em;
   font-family: "Oswald";
@@ -181,7 +155,7 @@ a:hover {
   flex-direction: row;
 }
 
-.container .middle-bar-options .for-crud div {
+.container > .middle-bar-options .for-crud > div {
   margin-left: 0.5em; /* Отступы между внутренними div */
   margin-right: 0.5em;
 }

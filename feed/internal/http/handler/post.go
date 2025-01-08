@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"social-media-feed/internal/fake"
 	"social-media-feed/internal/feed_data"
+	"strconv"
 
 	//"strconv"
 	"time"
@@ -126,5 +128,48 @@ func (h *Handler) deletePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Доделать
+	params, err := url.ParseQuery(r.URL.RawQuery)
+	if err != nil {
+		err_str := fmt.Sprintf("[delete post] Not get url params: %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+		return
+	}
+	
+	idPost := params.Get("idPost")
+
+	h.logger.Debug("data:", "idPost", idPost)
+
+	if idPost == ""  {
+		err_str := fmt.Sprintf("[delete post] Not parse url params: %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+		return
+	}
+
+	fmtIdPost,err := strconv.Atoi(idPost) 
+	if err != nil {
+        err_str := fmt.Sprintf("[delete post] Not parse postId: %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+        return
+    }
+
+	post, err := h.repo.PostGateway.GetById(fmtIdPost)
+	if err != nil {
+        err_str := fmt.Sprintf("[delete post] error of getting id of post in db: %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+        return
+    }
+	err = os.Remove("./"+post.ImagePath)
+	if err != nil {
+		err_str := fmt.Sprintf("[delete post] error of delete file : %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+		return
+	}
+	err = h.repo.PostGateway.Delete(fmtIdPost)
+	if err != nil {
+        err_str := fmt.Sprintf("[delete post] error of delete in db: %s", err)
+		h.newErrorResponse(w, http.StatusInternalServerError, err_str)
+        return
+    }
+
+	w.WriteHeader(http.StatusOK)
 }

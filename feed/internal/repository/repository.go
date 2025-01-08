@@ -11,7 +11,6 @@ type PostGateway interface {
 	GetAll() ([]feed_data.Post, error)
 	GetById(postId int) (feed_data.Post, error)
 	Delete(postId int) error
-	Update(postId int, input feed_data.PostUpdateFields) error
 }
 
 type LikeGateway interface {

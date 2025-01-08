@@ -11,7 +11,7 @@
   <body>
     <div class="container">
       <div class="middle-bar">
-        <h2 class="name-of-public">MАТ F*CK</h2>
+        <div class="name-of-public"><h2>MАТ F*CK</h2></div>
         <div class="bar">
           <div class="elem">
             <img src="resources\mathboss.jpg" alt="" />
@@ -58,7 +58,7 @@
             >
               &#10084;
             </button>
-            <button class="delete-button">&#x1F5D1;</button>
+            <button class="delete-button" id="post-{{.Id}}">&#x1F5D1;</button>
           </div>
         </div>
       </div>
@@ -66,8 +66,6 @@
     </div>
 
     <script>
-      // TODO Переписать когда будут состояния лайка в базе
-      // Получаем все посты
       const posts = document.querySelectorAll(".for-post")
 
       posts.forEach((post) => {
@@ -76,25 +74,29 @@
         const post_id = post.id.slice(5)
         const like_id = heartButton.id.slice(5)
 
+        const delete_post_url = `/deletePost?idPost=${encodeURIComponent(
+          post_id
+        )}`
+
         // Формируем URL для запроса
-      const url = `/changingLike?post_id=${encodeURIComponent(
-        post_id
-      )}&like_id=${encodeURIComponent(like_id)}`
+        const like_change_url = `/changingLike?post_id=${encodeURIComponent(
+          post_id
+        )}&like_id=${encodeURIComponent(like_id)}`
         heartButton.addEventListener("click", function () {
           // Выполняем HTTP-запрос
-        fetch(url, { method: "POST" })
-          .then((response) => {
-            if (response.ok) {
-              return response.text()
-            } else {
-              throw new Error("Ошибка смены лайка")
-            }
-          })
-          .catch((error) => {
-            // Обработка ошибки
-            console.error("Ошибка:", error)
-            alert("Не удалось поменять лайк")
-          })
+          fetch(like_change_url, { method: "POST" })
+            .then((response) => {
+              if (response.ok) {
+                return response.text()
+              } else {
+                throw new Error("Ошибка смены лайка")
+              }
+            })
+            .catch((error) => {
+              // Обработка ошибки
+              console.error("Ошибка:", error)
+              alert("Не удалось поменять лайк")
+            })
           // Если лайк активен, убираем его активное состояние
           if (heartButton.classList.contains("active")) {
             heartButton.classList.remove("active")
@@ -104,11 +106,28 @@
         })
 
         deleteButton.addEventListener("click", function () {
-          // Если сердце активно, убираем его активное состояние
           if (deleteButton.classList.contains("active")) {
             deleteButton.classList.remove("active")
           } else {
             deleteButton.classList.toggle("active")
+            fetch(delete_post_url, { method: "POST" })
+              .then((response) => {
+                if (response.ok) {
+                  return response.text()
+                } else {
+                  throw new Error("Ошибка удаления")
+                }
+              })
+              .then((data) => {
+                // Обработка успешного ответа
+                alert(`Удаление прошло успешно: ${data}`)
+                window.location.href = "/"
+              })
+              .catch((error) => {
+                // Обработка ошибки
+                console.error("Ошибка:", error)
+                alert("Не удалось удалить пост")
+              })
           }
         })
       })
